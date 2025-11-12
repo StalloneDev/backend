@@ -178,10 +178,8 @@ export function registerRoutes(app: Express): void {
       const monthEnd = endOfMonth(now);
 
       const currentMonthCommandes = commandes.filter((cmd) => {
-        const date = cmd.dateChargement instanceof Date 
-          ? cmd.dateChargement 
-          : new Date(cmd.dateChargement);
-        return date >= monthStart && date <= monthEnd;
+        const date = new Date(cmd.dateChargement as unknown as string);
+        return !Number.isNaN(date.getTime()) && date >= monthStart && date <= monthEnd;
       });
 
       const totalCommandes = currentMonthCommandes.length;
