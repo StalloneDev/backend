@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChargeTrackPro API</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 2rem;
+        max-width: 960px;
+        margin-inline: auto;
+        line-height: 1.6;
+      }
+      header {
+        margin-bottom: 2rem;
+      }
+      h1 {
+        margin-bottom: 0.5rem;
+      }
+      .welcome {
+        background: rgba(37, 99, 235, 0.08);
+        border-left: 4px solid rgba(37, 99, 235, 0.7);
+        padding: 1rem 1.25rem;
+        border-radius: 0.5rem;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        margin-bottom: 1rem;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        border-radius: 0.5rem;
+        padding: 1rem;
+      }
+      code {
+        font-family: Consolas, "Fira Code", monospace;
+        background: rgba(148, 163, 184, 0.2);
+        padding: 0.1rem 0.25rem;
+        border-radius: 0.3rem;
+      }
+      .method {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+      }
+      .GET {
+        background: rgba(37, 99, 235, 0.15);
+        color: rgb(29, 78, 216);
+      }
+      .POST {
+        background: rgba(16, 185, 129, 0.15);
+        color: rgb(5, 122, 85);
+      }
+      .PUT {
+        background: rgba(234, 179, 8, 0.15);
+        color: rgb(161, 98, 7);
+      }
+      .DELETE {
+        background: rgba(239, 68, 68, 0.15);
+        color: rgb(185, 28, 28);
+      }
+      footer {
+        margin-top: 3rem;
+        font-size: 0.9rem;
+        color: rgba(100, 116, 139, 0.9);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Bienvenue sur l'API de Suivi des Chargements</h1>
+      <div class="welcome">
+        <p>
+          Utilisez les endpoints ci-dessous avec
+          <code>http://localhost:5000</code> comme base URL (ou l’hôte configuré dans vos variables
+          d’environnement). L’authentification se fait via session après connexion.
+        </p>
+        <p>
+          Identifiants par défaut : <strong>Superadmin</strong> / <strong>Administrator</strong>
+        </p>
+      </div>
+    </header>
+
+    <section>
+      <h2>Liste des endpoints</h2>
+      <ul>
+        <li>
+          <span class="method GET">GET</span>
+          <code>/api/auth/me</code><br />
+          Vérifie la session en cours. Renvoie 401 si non connecté.
+        </li>
+        <li>
+          <span class="method POST">POST</span>
+          <code>/api/auth/login</code><br />
+          Authentifie un utilisateur. Body JSON attendu : <code>{ "username": "", "password": "" }</code>
+        </li>
+        <li>
+          <span class="method POST">POST</span>
+          <code>/api/auth/logout</code><br />
+          Termine la session courante.
+        </li>
+        <li>
+          <span class="method GET">GET</span>
+          <code>/api/commandes</code><br />
+          Retourne la liste des commandes (auth requise).
+        </li>
+        <li>
+          <span class="method GET">GET</span>
+          <code>/api/commandes/:id</code><br />
+          Retourne une commande précise (auth requise).
+        </li>
+        <li>
+          <span class="method POST">POST</span>
+          <code>/api/commandes</code><br />
+          Crée une nouvelle commande. Corps validé par Zod (auth requise).
+        </li>
+        <li>
+          <span class="method PUT">PUT</span>
+          <code>/api/commandes/:id</code><br />
+          Met à jour une commande existante (auth requise).
+        </li>
+        <li>
+          <span class="method DELETE">DELETE</span>
+          <code>/api/commandes/:id</code><br />
+          Supprime une commande (auth requise).
+        </li>
+        <li>
+          <span class="method GET">GET</span>
+          <code>/api/stats</code><br />
+          Statistiques mensuelles : totaux, meilleurs clients, transporteurs, dépôts (auth requise).
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      ChargeTrackPro API – Gestion des chargements de marchandises.
+    </footer>
+  </body>
+</html>
+
+
