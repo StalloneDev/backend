@@ -41,12 +41,27 @@ export class PgStorage implements IStorage {
   }
 
   async createCommande(insertCommande: InsertCommande): Promise<Commande> {
-    const rows = await db.insert(commandes).values(insertCommande).returning();
+    const rows = await db
+      .insert(commandes)
+      .values({
+        ...insertCommande,
+        quantite: insertCommande.quantite.toString(),
+        tauxTransport: insertCommande.tauxTransport.toString(),
+      })
+      .returning();
     return rows[0]!;
   }
 
   async updateCommande(id: string, insertCommande: InsertCommande): Promise<Commande | undefined> {
-    const rows = await db.update(commandes).set(insertCommande).where(eq(commandes.id, id)).returning();
+    const rows = await db
+      .update(commandes)
+      .set({
+        ...insertCommande,
+        quantite: insertCommande.quantite.toString(),
+        tauxTransport: insertCommande.tauxTransport.toString(),
+      })
+      .where(eq(commandes.id, id))
+      .returning();
     return rows[0];
   }
 

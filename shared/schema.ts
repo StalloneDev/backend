@@ -44,13 +44,19 @@ export const commandes = pgTable("commandes", {
 export const insertCommandeSchema = createInsertSchema(commandes, {
   client: z.string().min(1, "Le client est requis"),
   numeroBonCommande: z.string().min(1, "Le numéro de bon de commande est requis"),
-  dateLivraison: z.coerce.date({ required_error: "La date de livraison est requise" }),
+  dateLivraison: z
+    .string({ required_error: "La date de livraison est requise" })
+    .refine((value) => !Number.isNaN(Date.parse(value)), "Date de livraison invalide")
+    .transform((value) => value),
   depot: z.string().min(1, "Le dépôt est requis"),
   camion: z.string().min(1, "Le camion est requis"),
   quantite: z.coerce.number().positive("La quantité doit être positive"),
   produit: produitEnum,
   fournisseur: z.string().min(1, "Le fournisseur est requis"),
-  dateChargement: z.coerce.date({ required_error: "La date de chargement est requise" }),
+  dateChargement: z
+    .string({ required_error: "La date de chargement est requise" })
+    .refine((value) => !Number.isNaN(Date.parse(value)), "Date de chargement invalide")
+    .transform((value) => value),
   statut: statutEnum,
   transporteur: z.string().min(1, "Le transporteur est requis"),
   destination: z.string().min(1, "La destination est requise"),
