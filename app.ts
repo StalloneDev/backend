@@ -3,7 +3,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import session from "express-session";
 import MemoryStore from "memorystore";
 import path from "path";
-import { registerRoutes } from "./routes";
+import { registerRoutes } from "./routes.js";
 import cors from "cors";
 
 declare module "http" {
