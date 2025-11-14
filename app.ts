@@ -51,8 +51,7 @@ export function createApp() {
 
   app.use(
     cors({
-      // origin: allowAllOrigins ? true : corsOriginsRaw,
-      origin: "https://suivi-chargement.vercel.app",
+      origin: allowAllOrigins ? true : corsOriginsRaw,
       credentials: true,
     }),
   );
