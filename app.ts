@@ -1,7 +1,8 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import session from "express-session";
-import MemoryStore from "memorystore";
+import connectPgSimple from "connect-pg-simple";
+import { Pool } from "pg";
 import path from "path";
 import { registerRoutes } from "./routes.js";
 import cors from "cors";
@@ -12,13 +13,28 @@ declare module "http" {
   }
 }
 
-const MemStore = MemoryStore(session);
+const PgStore = connectPgSimple(session);
 
 const corsOriginsRaw = (process.env.CORS_ORIGIN || "http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
 const allowAllOrigins = corsOriginsRaw.includes("*");
+
+const pgPool = process.env.DATABASE_URL
+  ? new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.DATABASE_SSL === "off" ? false : { rejectUnauthorized: false },
+    })
+  : undefined;
+
+const sessionStore = pgPool
+  ? new PgStore({
+      pool: pgPool,
+      tableName: "user_sessions",
+      createTableIfMissing: true,
+    })
+  : undefined;
 
 export function createApp() {
   const app = express();
@@ -35,9 +51,7 @@ export function createApp() {
       secret: process.env.SESSION_SECRET || "suivi-chargements-secret-key-2025",
       resave: false,
       saveUninitialized: false,
-      store: new MemStore({
-        checkPeriod: 86400000,
-      }),
+      store: sessionStore ?? new session.MemoryStore(),
       cookie: {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
