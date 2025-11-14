@@ -1,6 +1,7 @@
 import "dotenv/config";
-import express, { type Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import session from "express-session";
+// @ts-expect-error: No type declarations for connect-pg-simple
 import connectPgSimple from "connect-pg-simple";
 import { Pool } from "pg";
 import path from "path";
@@ -28,13 +29,22 @@ const pgPool = process.env.DATABASE_URL
     })
   : undefined;
 
-const sessionStore = pgPool
-  ? new PgStore({
-      pool: pgPool,
-      tableName: "user_sessions",
-      createTableIfMissing: true,
-    })
-  : undefined;
+let sessionStore: session.Store | undefined;
+
+if (pgPool) {
+  sessionStore = new PgStore({
+    pool: pgPool,
+    tableName: "user_sessions",
+    createTableIfMissing: true,
+    schemaName: "public",
+  });
+  sessionStore!.on("connect-error", (err) => {
+    console.error("Session store connection error:", err);
+  });
+  sessionStore!.on("error", (err) => {
+    console.error("Session store error:", err);
+  });
+}
 
 export function createApp() {
   const app = express();
