@@ -1,6 +1,6 @@
 import type { Express } from "express";
-import { storage } from "./storage";
-import { insertCommandeSchema } from "./shared/schema";
+import { storage } from "./storage.js";
+import { insertCommandeSchema } from "./shared/schema.js";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";

@@ -1,5 +1,5 @@
-import { db } from "./db";
-import { commandes, users, type User, type InsertUser, type Commande, type InsertCommande } from "./shared/schema";
+import { db } from "./db.js";
+import { commandes, users, type User, type InsertUser, type Commande, type InsertCommande } from "./shared/schema.js";
 import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
